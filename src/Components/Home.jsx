@@ -12,6 +12,7 @@ const Home = () => {
   const [input, setInput] = useState("");
   const [datas, setData] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [image, setImage] = useState(null);
 
   const [session, setSession] = useContext(LoginContext);
 
@@ -34,6 +35,21 @@ const Home = () => {
     return () => subscription.unsubscribe();
   }, [session]);
 
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+    }
+  };
+  useEffect(() => {
+    return () => {
+      if (image) {
+        URL.revokeObjectURL(image);
+      }
+    };
+  }, [image]);
+
   const handleAdd = async () => {
     try {
       const { data, error } = await supabase.from("posts").insert([
@@ -41,11 +57,11 @@ const Home = () => {
           content: input,
           user_if: currentUser.user_metadata.id,
           uName: currentUser.user_metadata.name,
+          image: image,
         },
       ]);
 
       setInput("");
-
       if (error) {
         throw error;
       }
@@ -106,6 +122,14 @@ const Home = () => {
               placeholder="Enter your post"
               className="border p-3 rounded-md"
             />
+            <input
+              type="file"
+              id="avatar"
+              name="avatar"
+              accept="image/png, image/jpeg"
+              className="file-input mb-4 mt-5 border-2 border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500 transition duration-300"
+              onChange={handleImage}
+            />
             <button
               className="w-20 h-10 bg-blue-700 text-white flex justify-center items-center rounded-full mt-4"
               onClick={handleAdd}
@@ -122,6 +146,7 @@ const Home = () => {
                   key={item.id}
                   className="mt-5 bg-white p-4 rounded-md shadow-md"
                 >
+                  <img src={item.image} alt="" />
                   <p className="text-lg">{item.content}</p>
                   <p className="text-gray-600 mt-2">Posted by {item.uName}</p>
                   <button
