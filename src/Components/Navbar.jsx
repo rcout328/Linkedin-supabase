@@ -45,6 +45,9 @@ const Navbar = () => {
           <Link to={"/account"} className="ml-5">
             Account
           </Link>
+          <Link to={"/chat"} className="ml-5">
+            Chat
+          </Link>
         </>
       ) : (
         <button>
