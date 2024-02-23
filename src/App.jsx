@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./Components/Home";
 import Login from "./Auth/Login";
 import { LoginProvider } from "./Auth/Context";
 import Account from "./Components/Account";
 import Chat from "./Components/Chat";
+import Share from "./Components/Share";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Share />,
   },
   {
     path: "/login",

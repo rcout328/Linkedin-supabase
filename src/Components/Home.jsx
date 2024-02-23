@@ -48,10 +48,10 @@ const Home = () => {
   };
 
   supabase
-    .channel("trail1")
+    .channel("trail11")
     .on(
       "postgres_changes",
-      { event: "INSERT", schema: "public", table: "todos" },
+      { event: "INSERT", schema: "public", table: "posts" },
       handleInserts
     )
     .subscribe();

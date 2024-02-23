@@ -6,10 +6,10 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqam11b21ucHZ4cXV6cmpiamlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgwMDYxOTgsImV4cCI6MjAyMzU4MjE5OH0.cTCh0a69IL3t_Cq-vLfcoDuCfspg9mZdCfGuQ8MK8z4"
 );
 const Account = () => {
-  const [users, setUser] = useState(null);
+  const [setUser] = useState(null);
   const [newEmail, setNewEmail] = useState("");
   const [name, setname] = useState("");
-  const [Name, setName] = useState("");
+  const [Name] = useState("");
 
   async function handleUser() {
     try {
