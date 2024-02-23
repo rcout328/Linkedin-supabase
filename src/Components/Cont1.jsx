@@ -10,12 +10,26 @@ import {
   onSnapshot,
   limit,
   orderBy,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 
 const Cont1 = () => {
   const [user] = useAuthState(auth);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  // Added state to store the document ID to delete
+
+  const deleteMessage = async (docId) => {
+    try {
+      const dataRef = doc(collection(db, "posts"), docId);
+      // Delete the document
+      await deleteDoc(dataRef);
+      console.log("Document successfully deleted!");
+    } catch (error) {
+      console.error("Error deleting document: ", error.message);
+    }
+  };
 
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("createdAt"), limit(50));
@@ -54,32 +68,52 @@ const Cont1 = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-500 to-indigo-600  p-4">
       <NavBar />
       {!user ? (
-        <h1>Sign in to chat</h1>
+        <h1 className="text-4xl font-bold">Sign in to chat</h1>
       ) : (
-        <>
-          <h1>Welcome to the chat</h1>
-          <h1>{user?.email}</h1>
+        <div className="flex flex-col items-center">
+          <h1 className="text-4xl font-bold mb-2 text-white">
+            Welcome to the chat
+          </h1>
+          <h1 className="text-xl mb-4 text-white">{user?.email}</h1>
 
-          <input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Enter message"
-          />
-          <button type="submit" onClick={sendMessage}>
+          <div className="w-full max-w-md mb-4">
+            <input
+              className="w-full p-2 border rounded"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Enter message"
+            />
+          </div>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            type="submit"
+            onClick={sendMessage}
+          >
             Send
           </button>
 
-          <ul className="messages-wrapper">
+          <ul className="mt-8 w-full max-w-md">
             {messages.map((message) => (
-              <li key={message.id}>
+              <li
+                key={message.id}
+                className="mb-2 p-2 bg-gray-800 text-white bg-opacity-50 rounded"
+              >
                 <strong>{message.name}:</strong> {message.text}
+                {user.uid === message.uid && (
+                  <button
+                    className="ml-2 text-red-500"
+                    onClick={() => deleteMessage(message.id)}
+                  >
+                    Delete
+                  </button>
+                )}
               </li>
             ))}
           </ul>
-        </>
+        </div>
       )}
     </div>
   );
