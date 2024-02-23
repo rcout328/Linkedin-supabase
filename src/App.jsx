@@ -3,12 +3,12 @@ import Login from "./Auth/Login";
 import { LoginProvider } from "./Auth/Context";
 import Account from "./Components/Account";
 import Chat from "./Components/Chat";
-import Share from "./Components/Share";
+import Cont1 from "./Components/Cont1";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Share />,
+    element: <Cont1 />,
   },
   {
     path: "/login",
